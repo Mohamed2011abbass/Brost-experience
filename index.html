@@ -1,0 +1,3359 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Chicken Broest - أفضل بروست وفرايد تشيكن في الإسكندرية">
+<title>Chicken Broest | بروست دجاج مقرمش</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Cairo:wght@300;400;600;700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   CSS VARIABLES & ROOT
+   ============================================================ */
+:root {
+  --primary: #00d4aa;
+  --primary-dark: #009977;
+  --accent: #ff6b00;
+  --accent-bright: #ff8c00;
+  --neon-green: #00ff88;
+  --neon-orange: #ff4500;
+  --bg-deep: #020c08;
+  --bg-dark: #041a10;
+  --bg-card: rgba(0, 30, 18, 0.85);
+  --bg-glass: rgba(0, 212, 170, 0.05);
+  --text-white: #f0fff8;
+  --text-muted: #7ab8a0;
+  --border-glow: rgba(0, 212, 170, 0.3);
+  --border-accent: rgba(255, 107, 0, 0.4);
+  --font-display: 'Orbitron', sans-serif;
+  --font-arabic: 'Cairo', sans-serif;
+  --font-body: 'Rajdhani', sans-serif;
+  --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --glow-primary: 0 0 20px rgba(0, 212, 170, 0.5), 0 0 60px rgba(0, 212, 170, 0.2);
+  --glow-accent: 0 0 20px rgba(255, 107, 0, 0.5), 0 0 60px rgba(255, 107, 0, 0.2);
+  --glow-neon: 0 0 10px #00ff88, 0 0 30px #00ff88, 0 0 60px rgba(0,255,136,0.3);
+}
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary) var(--bg-deep);
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-deep); }
+::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
+
+body {
+  font-family: var(--font-arabic);
+  background: var(--bg-deep);
+  color: var(--text-white);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ============================================================
+   CUSTOM CURSOR
+   ============================================================ */
+#cursor-dot {
+  position: fixed;
+  width: 10px; height: 10px;
+  background: var(--accent);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%,-50%);
+  transition: transform 0.1s ease;
+  box-shadow: var(--glow-accent);
+}
+#cursor-ring {
+  position: fixed;
+  width: 40px; height: 40px;
+  border: 1.5px solid var(--primary);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%,-50%);
+  transition: all 0.15s ease;
+  mix-blend-mode: difference;
+}
+
+/* ============================================================
+   SCROLL PROGRESS
+   ============================================================ */
+#scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  z-index: 9999;
+  width: 0%;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 10px var(--primary);
+}
+
+/* ============================================================
+   LOADING SCREEN
+   ============================================================ */
+#loader {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-deep);
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.8s ease, visibility 0.8s;
+}
+#loader.hide { opacity: 0; visibility: hidden; pointer-events: none; }
+
+.loader-logo {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 900;
+  color: var(--primary);
+  text-shadow: var(--glow-primary);
+  letter-spacing: 0.1em;
+  animation: loaderPulse 1.5s ease-in-out infinite;
+}
+.loader-sub {
+  font-family: var(--font-arabic);
+  font-size: 1rem;
+  color: var(--accent);
+  margin-top: 0.5rem;
+  opacity: 0.8;
+}
+.loader-bar-container {
+  width: 300px;
+  height: 4px;
+  background: rgba(0,212,170,0.2);
+  border-radius: 2px;
+  margin-top: 2rem;
+  overflow: hidden;
+}
+.loader-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 2px;
+  width: 0%;
+  animation: loadProgress 2.5s ease forwards;
+  box-shadow: 0 0 10px var(--primary);
+}
+.loader-particles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.loader-particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: var(--primary);
+  border-radius: 50%;
+  animation: floatParticle linear infinite;
+  opacity: 0.6;
+}
+
+@keyframes loaderPulse {
+  0%,100% { text-shadow: var(--glow-primary); }
+  50% { text-shadow: 0 0 40px rgba(0,212,170,0.9), 0 0 80px rgba(0,212,170,0.4); }
+}
+@keyframes loadProgress {
+  0% { width: 0%; }
+  30% { width: 35%; }
+  60% { width: 72%; }
+  90% { width: 95%; }
+  100% { width: 100%; }
+}
+@keyframes floatParticle {
+  0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.6; }
+  100% { transform: translateY(-100px) rotate(720deg); opacity: 0; }
+}
+
+/* ============================================================
+   PARTICLES BACKGROUND
+   ============================================================ */
+#particles-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+}
+
+/* ============================================================
+   NAVBAR
+   ============================================================ */
+#navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(2, 12, 8, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-glow);
+  transition: var(--transition);
+}
+#navbar.scrolled {
+  padding: 0.6rem 2rem;
+  background: rgba(2, 12, 8, 0.97);
+  box-shadow: 0 4px 30px rgba(0, 212, 170, 0.15);
+}
+
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--primary);
+  text-decoration: none;
+  text-shadow: var(--glow-primary);
+  letter-spacing: 0.05em;
+}
+.nav-logo span { color: var(--accent); }
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+  align-items: center;
+}
+.nav-links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-family: var(--font-arabic);
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: var(--transition);
+  position: relative;
+  padding-bottom: 4px;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+  box-shadow: 0 0 8px var(--accent);
+}
+.nav-links a:hover, .nav-links a.active { color: var(--text-white); }
+.nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
+
+.nav-cta {
+  background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+  color: #fff !important;
+  padding: 0.5rem 1.5rem;
+  border-radius: 50px;
+  font-weight: 700 !important;
+  box-shadow: var(--glow-accent);
+  transition: var(--transition) !important;
+}
+.nav-cta:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(255,107,0,0.7) !important; }
+.nav-cta::after { display: none !important; }
+
+.nav-lang-toggle {
+  background: transparent;
+  border: 1px solid var(--border-glow);
+  color: var(--primary);
+  padding: 0.4rem 0.9rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  transition: var(--transition);
+}
+.nav-lang-toggle:hover { background: var(--bg-glass); box-shadow: var(--glow-primary); }
+
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 5px;
+}
+.nav-hamburger span {
+  width: 25px; height: 2px;
+  background: var(--primary);
+  border-radius: 2px;
+  transition: var(--transition);
+}
+
+.nav-mobile {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(2,12,8,0.98);
+  z-index: 999;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+.nav-mobile.open { display: flex; }
+.nav-mobile a {
+  font-family: var(--font-arabic);
+  font-size: 1.5rem;
+  color: var(--text-white);
+  text-decoration: none;
+  font-weight: 700;
+  transition: var(--transition);
+}
+.nav-mobile a:hover { color: var(--accent); text-shadow: var(--glow-accent); }
+.nav-mobile-close {
+  position: absolute;
+  top: 1.5rem; left: 2rem;
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+/* ============================================================
+   HERO SECTION
+   ============================================================ */
+#hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 60% 30%, rgba(0,212,170,0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 50% at 20% 70%, rgba(255,107,0,0.06) 0%, transparent 70%),
+    linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-dark) 100%);
+}
+
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,212,170,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,170,0.05) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: gridShift 20s linear infinite;
+  opacity: 0.5;
+}
+@keyframes gridShift {
+  0% { transform: perspective(500px) rotateX(5deg) translateY(0); }
+  100% { transform: perspective(500px) rotateX(5deg) translateY(60px); }
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 0 2rem;
+  max-width: 900px;
+  padding-top: 80px;
+}
+
+.hero-badge {
+  display: inline-block;
+  background: rgba(255,107,0,0.15);
+  border: 1px solid var(--border-accent);
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  padding: 0.4rem 1.2rem;
+  border-radius: 50px;
+  margin-bottom: 1.5rem;
+  animation: badgePulse 3s ease-in-out infinite;
+}
+@keyframes badgePulse {
+  0%,100% { box-shadow: 0 0 10px rgba(255,107,0,0.3); }
+  50% { box-shadow: 0 0 25px rgba(255,107,0,0.6); }
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 7vw, 6rem);
+  font-weight: 900;
+  line-height: 1;
+  color: var(--text-white);
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.3rem;
+}
+.hero-title .highlight {
+  color: var(--primary);
+  text-shadow: var(--glow-primary);
+  display: block;
+}
+.hero-title .highlight-orange {
+  color: var(--accent);
+  text-shadow: var(--glow-accent);
+}
+
+.hero-subtitle {
+  font-family: var(--font-arabic);
+  font-size: clamp(1rem, 2.5vw, 1.4rem);
+  color: var(--text-muted);
+  margin: 1rem 0 2.5rem;
+  font-weight: 400;
+}
+.hero-title .highlight {
+  color: var(--primary);
+  text-shadow: var(--glow-primary);
+}
+
+@keyframes gradientShift {
+  0%   { background-position: 0%; }
+  100% { background-position: 300%; }
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+button:hover, a:hover {
+  box-shadow: 0 0 15px rgba(0, 212, 170, 0.7);
+  transition: box-shadow 0.3s ease;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: var(--bg-deep);
+  padding: 0.9rem 2.5rem;
+  border: none;
+  border-radius: 50px;
+  font-family: var(--font-arabic);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: var(--glow-primary);
+  position: relative;
+  overflow: hidden;
+
+}
+html {
+  scroll-behavior: smooth;
+}
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.2));
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.btn-primary:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 0 40px rgba(0,212,170,0.7); }
+.btn-primary:hover::before { opacity: 1; }
+
+.btn-secondary {
+  background: transparent;
+  color: var(--accent);
+  padding: 0.9rem 2.5rem;
+  border: 1.5px solid var(--accent);
+  border-radius: 50px;
+  font-family: var(--font-arabic);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: var(--glow-accent);
+}
+.btn-secondary:hover { background: var(--accent); color: #fff; transform: translateY(-3px); }
+
+.btn-ghost {
+  background: var(--bg-glass);
+  color: var(--text-muted);
+  padding: 0.9rem 2rem;
+  border: 1px solid var(--border-glow);
+  border-radius: 50px;
+  font-family: var(--font-arabic);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  backdrop-filter: blur(10px);
+}
+.btn-ghost:hover { color: var(--primary); border-color: var(--primary); }
+
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin-top: 4rem;
+  flex-wrap: wrap;
+}
+.hero-stat {
+  text-align: center;
+}
+.hero-stat .num {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--primary);
+  text-shadow: var(--glow-primary);
+  display: block;
+  line-height: 1;
+}
+.hero-stat .label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 0.3rem;
+  font-family: var(--font-arabic);
+}
+
+.hero-scroll-hint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-family: var(--font-display);
+  letter-spacing: 0.2em;
+  animation: scrollBounce 2s ease-in-out infinite;
+}
+.hero-scroll-hint svg { animation: scrollArrow 1.5s ease-in-out infinite; }
+@keyframes scrollBounce { 0%,100% { opacity: 0.5; } 50% { opacity: 1; } }
+@keyframes scrollArrow { 0%,100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
+
+/* ============================================================
+   SECTION COMMON
+   ============================================================ */
+.section {
+  position: relative;
+  z-index: 1;
+  padding: 6rem 2rem;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.section-tag {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  letter-spacing: 0.4em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+  display: block;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 900;
+  color: var(--text-white);
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+.section-title .glow { color: var(--primary); text-shadow: var(--glow-primary); }
+.section-title .accent { color: var(--accent); text-shadow: var(--glow-accent); }
+
+.section-title-ar {
+  font-family: var(--font-arabic);
+  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+  color: var(--text-muted);
+  margin-top: 0.5rem;
+  font-weight: 400;
+}
+
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.5rem auto;
+  max-width: 400px;
+  justify-content: center;
+}
+.section-divider::before, .section-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+}
+.section-divider-dot {
+  width: 8px; height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: var(--glow-accent);
+  animation: dotPulse 2s ease-in-out infinite;
+}
+@keyframes dotPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.5); } }
+
+/* reveal animations */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* ============================================================
+   MENU SECTION
+   ============================================================ */
+#menu {
+  background:
+    radial-gradient(ellipse 100% 50% at 50% 0%, rgba(0,212,170,0.04) 0%, transparent 60%),
+    var(--bg-deep);
+  padding-bottom: 8rem;
+}
+
+.menu-filter-bar {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 3rem;
+  position: relative;
+  z-index: 2;
+}
+
+.filter-btn {
+  background: var(--bg-glass);
+  border: 1px solid var(--border-glow);
+  color: var(--text-muted);
+  padding: 0.5rem 1.4rem;
+  border-radius: 50px;
+  cursor: pointer;
+  font-family: var(--font-arabic);
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: var(--transition);
+  backdrop-filter: blur(10px);
+}
+.filter-btn:hover, .filter-btn.active {
+  background: var(--primary);
+  color: var(--bg-deep);
+  border-color: var(--primary);
+  box-shadow: var(--glow-primary);
+}
+
+.menu-search-wrapper {
+  max-width: 500px;
+  margin: 0 auto 3rem;
+  position: relative;
+}
+.menu-search {
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glow);
+  color: var(--text-white);
+  padding: 0.9rem 3rem 0.9rem 1.5rem;
+  border-radius: 50px;
+  font-family: var(--font-arabic);
+  font-size: 1rem;
+  outline: none;
+  transition: var(--transition);
+  backdrop-filter: blur(10px);
+}
+.menu-search:focus { border-color: var(--primary); box-shadow: var(--glow-primary); }
+.menu-search-icon {
+  position: absolute;
+  left: 1.2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--primary);
+  font-size: 1.1rem;
+}
+
+/* Category Sections */
+.menu-category {
+  margin-bottom: 5rem;
+  display: none;
+}
+.menu-category.active { display: block; }
+
+.menu-category-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-weight: 900;
+  color: var(--text-white);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.menu-category-title::before {
+  content: '';
+  display: block;
+  width: 4px;
+  height: 2.5rem;
+  background: linear-gradient(180deg, var(--accent), var(--primary));
+  border-radius: 2px;
+  box-shadow: var(--glow-accent);
+}
+.menu-category-title-ar {
+  font-family: var(--font-arabic);
+  font-size: 1rem;
+  color: var(--text-muted);
+  margin-bottom: 2.5rem;
+  padding-right: 1.5rem;
+}
+
+/* ---- Individual Meals ---- */
+.individual-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.meal-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glow);
+  border-radius: 16px;
+  padding: 1.8rem;
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  transform-style: preserve-3d;
+}
+.meal-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0,212,170,0.03) 0%, transparent 60%);
+  border-radius: inherit;
+  transition: opacity 0.3s;
+}
+.meal-card:hover {
+  border-color: var(--primary);
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: var(--glow-primary), 0 20px 60px rgba(0,0,0,0.5);
+}
+.meal-card:hover::before { opacity: 0; }
+
+.meal-card-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.65rem;
+  font-family: var(--font-display);
+  padding: 0.25rem 0.7rem;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  box-shadow: var(--glow-accent);
+}
+
+.meal-card-emoji {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  display: block;
+  filter: drop-shadow(0 0 10px rgba(255,107,0,0.4));
+  animation: floatEmoji 3s ease-in-out infinite;
+}
+@keyframes floatEmoji {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.meal-card-name {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-white);
+  margin-bottom: 0.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.meal-card-name-ar {
+  font-family: var(--font-arabic);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+.meal-card-desc {
+  font-family: var(--font-arabic);
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin-bottom: 1.2rem;
+  opacity: 0.8;
+}
+
+.meal-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.meal-price {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--accent);
+  text-shadow: var(--glow-accent);
+}
+.meal-price span { font-size: 0.75rem; color: var(--text-muted); }
+
+.add-to-cart-btn {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  border: none;
+  color: var(--bg-deep);
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  box-shadow: var(--glow-primary);
+  font-weight: 900;
+}
+.add-to-cart-btn:hover { transform: rotate(90deg) scale(1.1); background: var(--accent); box-shadow: var(--glow-accent); }
+
+/* ---- Sandwiches ---- */
+.sandwich-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.sandwich-card {
+  background: linear-gradient(135deg, rgba(0,30,18,0.9), rgba(4,26,16,0.9));
+  border: 1px solid var(--border-glow);
+  border-radius: 16px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(15px);
+}
+.sandwich-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.sandwich-card:hover {
+  border-color: rgba(0,212,170,0.6);
+  transform: translateY(-5px);
+  box-shadow: 0 0 30px rgba(0,212,170,0.2), 0 20px 50px rgba(0,0,0,0.4);
+}
+.sandwich-card:hover::after { opacity: 1; }
+
+.sandwich-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.8rem;
+}
+.sandwich-name-en {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-white);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.sandwich-name-ar {
+  font-family: var(--font-arabic);
+  font-size: 0.85rem;
+  color: var(--primary);
+  margin-top: 0.2rem;
+}
+
+.sandwich-desc {
+  font-family: var(--font-arabic);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin-bottom: 1.2rem;
+  opacity: 0.75;
+  direction: rtl;
+}
+
+.sandwich-prices {
+  display: flex;
+  gap: 1rem;
+}
+.price-size {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(0,212,170,0.07);
+  border: 1px solid var(--border-glow);
+  border-radius: 10px;
+  padding: 0.5rem 1rem;
+  flex: 1;
+  transition: var(--transition);
+}
+.price-size:hover { background: rgba(0,212,170,0.15); border-color: var(--primary); }
+.price-size .size-label {
+  font-family: var(--font-display);
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  margin-bottom: 0.2rem;
+}
+.price-size .size-price {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: var(--accent);
+  text-shadow: 0 0 10px rgba(255,107,0,0.5);
+}
+.price-size.unavailable { opacity: 0.3; }
+.price-size.unavailable .size-price { color: var(--text-muted); }
+
+/* ---- Burger Section ---- */
+.burger-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.burger-card {
+  background: rgba(8, 18, 12, 0.95);
+  border: 1px solid rgba(255,107,0,0.25);
+  border-radius: 20px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+}
+.burger-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(255,107,0,0.08) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.burger-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: var(--glow-accent), 0 30px 60px rgba(0,0,0,0.6);
+}
+.burger-card:hover::before { opacity: 1; }
+
+.burger-card-visual {
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(255,107,0,0.1), rgba(0,212,170,0.05));
+  font-size: 4rem;
+  position: relative;
+  overflow: hidden;
+}
+.burger-card-visual::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 100%, rgba(255,107,0,0.2), transparent 60%);
+  animation: burgerGlow 3s ease-in-out infinite;
+}
+@keyframes burgerGlow {
+  0%,100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+@keyframes rippleAnim {
+  from { transform: scale(0); opacity: 1; }
+  to   { transform: scale(4); opacity: 0; }
+}
+.burger-card-body { padding: 1.3rem; }
+.burger-card-name {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-white);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.3rem;
+}
+.burger-card-name-ar {
+  font-family: var(--font-arabic);
+  font-size: 0.8rem;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+.burger-prices-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.burger-s { font-family: var(--font-display); font-size: 0.8rem; color: var(--text-muted); }
+.burger-s strong { color: var(--text-white); }
+.burger-d { font-family: var(--font-display); font-size: 1.2rem; font-weight: 900; color: var(--accent); text-shadow: var(--glow-accent); }
+.burger-d span { font-size: 0.7rem; color: var(--text-muted); }
+
+/* ---- Combo Section ---- */
+.combo-banner {
+  max-width: 900px;
+  margin: 0 auto 5rem;
+  background: linear-gradient(135deg, rgba(255,107,0,0.15), rgba(0,212,170,0.08));
+  border: 2px solid var(--accent);
+  border-radius: 20px;
+  padding: 3rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  animation: comboPulse 4s ease-in-out infinite;
+}
+@keyframes comboPulse {
+  0%,100% { box-shadow: var(--glow-accent); }
+  50% { box-shadow: 0 0 50px rgba(255,107,0,0.5), 0 0 100px rgba(255,107,0,0.2); }
+}
+.combo-banner::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, var(--accent), transparent, var(--primary), transparent, var(--accent));
+  opacity: 0.2;
+  animation: borderSpin 6s linear infinite;
+  z-index: -1;
+}
+@keyframes borderSpin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+.combo-label {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  letter-spacing: 0.4em;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+.combo-price-display {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 7vw, 6rem);
+  font-weight: 900;
+  color: var(--accent);
+  text-shadow: var(--glow-accent);
+  line-height: 1;
+}
+.combo-price-display span { color: var(--text-muted); font-size: 0.4em; }
+.combo-desc {
+  font-family: var(--font-arabic);
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+  color: var(--text-white);
+  margin: 1rem 0;
+  font-weight: 700;
+}
+.combo-sub {
+  font-family: var(--font-arabic);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+.combo-includes {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+.combo-include-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+}
+.combo-include-item .ci-icon { font-size: 2.5rem; }
+.combo-include-item .ci-label {
+  font-family: var(--font-arabic);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* ---- Kids Meals ---- */
+.kids-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.kids-card {
+  background: linear-gradient(135deg, rgba(0,212,170,0.06), rgba(255,107,0,0.06));
+  border: 1px solid var(--border-glow);
+  border-radius: 20px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+.kids-card:hover {
+  transform: translateY(-6px) rotate(1deg);
+  box-shadow: 0 0 30px rgba(0,212,170,0.3), 0 20px 50px rgba(0,0,0,0.4);
+  border-color: var(--primary);
+}
+.kids-emoji { font-size: 3.5rem; margin-bottom: 1rem; animation: floatEmoji 2.5s ease-in-out infinite; }
+.kids-name-en {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-white);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.3rem;
+}
+.kids-name-ar {
+  font-family: var(--font-arabic);
+  font-size: 0.9rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+.kids-price {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--neon-green);
+  text-shadow: var(--glow-neon);
+}
+
+/* ---- Family Meals ---- */
+.family-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.family-card {
+  background: linear-gradient(135deg, rgba(4,26,16,0.97), rgba(0,30,20,0.9));
+  border: 1px solid rgba(0,212,170,0.2);
+  border-radius: 20px;
+  padding: 2rem;
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+.family-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--primary), var(--accent), transparent);
+}
+.family-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 0 40px rgba(0,212,170,0.2), 0 30px 80px rgba(0,0,0,0.5);
+  border-color: rgba(0,212,170,0.5);
+}
+.family-card-icon { font-size: 3rem; margin-bottom: 1rem; }
+.family-card-name-en {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: var(--text-white);
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+}
+.family-card-name-ar {
+  font-family: var(--font-arabic);
+  font-size: 0.9rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+.family-card-desc {
+  font-family: var(--font-arabic);
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+  direction: rtl;
+  text-align: right;
+}
+.family-card-price-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.family-price {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--primary);
+  text-shadow: var(--glow-primary);
+}
+.family-price sup { font-size: 0.8rem; color: var(--text-muted); }
+
+/* ---- Side Items ---- */
+.sides-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.side-card {
+  background: rgba(0,25,15,0.8);
+  border: 1px solid rgba(0,212,170,0.15);
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: var(--transition);
+  backdrop-filter: blur(8px);
+  gap: 0.5rem;
+}
+.side-card:hover {
+  border-color: var(--primary);
+  background: rgba(0,212,170,0.06);
+  transform: scale(1.03);
+  box-shadow: 0 0 15px rgba(0,212,170,0.2);
+}
+.side-name-ar {
+  font-family: var(--font-arabic);
+  font-size: 0.9rem;
+  color: var(--text-white);
+  font-weight: 600;
+  direction: rtl;
+}
+.side-name-en {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+.side-price-display {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 900;
+  color: var(--accent);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   CART SIDEBAR
+   ============================================================ */
+#cart-sidebar {
+  position: fixed;
+  top: 0; right: -400px;
+  width: 380px;
+  height: 100vh;
+  background: rgba(2, 12, 8, 0.97);
+  backdrop-filter: blur(30px);
+  border-left: 1px solid var(--border-glow);
+  z-index: 9000;
+  transition: right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: -10px 0 50px rgba(0,0,0,0.5);
+}
+#cart-sidebar.open { right: 0; }
+
+.cart-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-glow);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(0,212,170,0.03);
+}
+.cart-title {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--primary);
+  text-shadow: var(--glow-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.cart-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: var(--transition);
+  line-height: 1;
+}
+.cart-close:hover { color: var(--accent); }
+
+.cart-items {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary) transparent;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(0,212,170,0.1);
+  animation: slideInCart 0.3s ease;
+}
+@keyframes slideInCart { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+
+.cart-item-icon { font-size: 2rem; }
+.cart-item-info { flex: 1; }
+.cart-item-name { font-family: var(--font-arabic); font-size: 0.9rem; color: var(--text-white); font-weight: 600; }
+.cart-item-price { font-family: var(--font-display); font-size: 0.85rem; color: var(--accent); }
+.cart-item-qty {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.qty-btn {
+  background: var(--bg-glass);
+  border: 1px solid var(--border-glow);
+  color: var(--primary);
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+.qty-btn:hover { background: var(--primary); color: var(--bg-deep); }
+.qty-display { font-family: var(--font-display); font-size: 0.9rem; color: var(--text-white); min-width: 20px; text-align: center; }
+
+.cart-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-muted);
+  text-align: center;
+  gap: 1rem;
+}
+.cart-empty-icon { font-size: 4rem; opacity: 0.3; }
+.cart-empty p { font-family: var(--font-arabic); }
+
+.cart-upsell {
+  padding: 1rem 1.5rem;
+  background: rgba(255,107,0,0.05);
+  border-top: 1px solid rgba(255,107,0,0.2);
+  border-bottom: 1px solid rgba(255,107,0,0.2);
+  font-family: var(--font-arabic);
+  font-size: 0.85rem;
+  color: var(--accent);
+  text-align: center;
+}
+
+.cart-footer {
+  padding: 1.5rem;
+  border-top: 1px solid var(--border-glow);
+}
+.cart-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.cart-total-label { font-family: var(--font-arabic); color: var(--text-muted); }
+.cart-total-price {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--primary);
+  text-shadow: var(--glow-primary);
+}
+.cart-checkout-btn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+  border: none;
+  color: #fff;
+  padding: 1rem;
+  border-radius: 12px;
+  font-family: var(--font-arabic);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: var(--glow-accent);
+}
+.cart-checkout-btn:hover { transform: scale(1.02); box-shadow: 0 0 40px rgba(255,107,0,0.6); }
+
+/* Cart toggle button */
+#cart-toggle {
+  position: fixed;
+  bottom: 2rem;
+  left: 2rem;
+  width: 60px; height: 60px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 8999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  box-shadow: var(--glow-accent);
+  transition: var(--transition);
+}
+#cart-toggle:hover { transform: scale(1.1); }
+#cart-count {
+  position: absolute;
+  top: -5px; right: -5px;
+  background: var(--primary);
+  color: var(--bg-deep);
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  display: none;
+}
+#cart-count.visible { display: flex; animation: countBounce 0.3s ease; }
+@keyframes countBounce { from { transform: scale(0); } to { transform: scale(1); } }
+
+/* ============================================================
+   CHATBOT
+   ============================================================ */
+#chatbot {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 8998;
+}
+#chatbot-toggle {
+  width: 60px; height: 60px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.5rem;
+  box-shadow: var(--glow-primary);
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#chatbot-toggle:hover { transform: scale(1.1); }
+
+#chatbot-window {
+  position: absolute;
+  bottom: 75px;
+  right: 0;
+  width: 320px;
+  background: rgba(2,12,8,0.97);
+  border: 1px solid var(--border-glow);
+  border-radius: 20px;
+  overflow: hidden;
+  backdrop-filter: blur(20px);
+  box-shadow: var(--glow-primary), 0 20px 60px rgba(0,0,0,0.5);
+  display: none;
+}
+#chatbot-window.open { display: flex; flex-direction: column; animation: chatAppear 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+@keyframes chatAppear { from { opacity: 0; transform: scale(0.8) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+
+.chatbot-header {
+  padding: 1rem 1.2rem;
+  background: linear-gradient(135deg, rgba(0,212,170,0.1), rgba(0,212,170,0.05));
+  border-bottom: 1px solid var(--border-glow);
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.chatbot-avatar {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+.chatbot-info {
+  display: flex;
+  flex-direction: column;
+}
+.chatbot-messages {
+  padding: 1rem;
+  height: 240px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary) transparent;
+}
+
+.chat-msg {
+  max-width: 85%;
+  padding: 0.7rem 1rem;
+  border-radius: 14px;
+  font-family: var(--font-arabic);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  animation: msgSlide 0.3s ease;
+}
+@keyframes msgSlide { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.chat-msg.bot {
+  background: rgba(0,212,170,0.1);
+  border: 1px solid var(--border-glow);
+  color: var(--text-white);
+  align-self: flex-start;
+  border-radius: 14px 14px 14px 4px;
+}
+.chat-msg.user {
+  background: rgba(255,107,0,0.15);
+  border: 1px solid rgba(255,107,0,0.3);
+  color: var(--text-white);
+  align-self: flex-end;
+  border-radius: 14px 14px 4px 14px;
+  direction: rtl;
+}
+
+.chatbot-input-area {
+  padding: 1rem;
+  border-top: 1px solid var(--border-glow);
+  display: flex;
+  gap: 0.5rem;
+}
+.chatbot-input {
+  flex: 1;
+  background: var(--bg-glass);
+  border: 1px solid var(--border-glow);
+  color: var(--text-white);
+  padding: 0.6rem 1rem;
+  border-radius: 20px;
+  font-family: var(--font-arabic);
+  font-size: 0.85rem;
+  outline: none;
+  transition: var(--transition);
+}
+.chatbot-input:focus { border-color: var(--primary); }
+.chatbot-send {
+  background: var(--primary);
+  border: none;
+  color: var(--bg-deep);
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  font-weight: 900;
+}
+.chatbot-send:hover { background: var(--accent); }
+
+/* ============================================================
+   GALLERY SECTION
+   ============================================================ */
+#gallery {
+  background: linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-dark) 50%, var(--bg-deep) 100%);
+  overflow: hidden;
+}
+
+.gallery-strip {
+  display: flex;
+  gap: 1.5rem;
+  animation: galleryScroll 30s linear infinite;
+  width: max-content;
+  margin-bottom: 1.5rem;
+}
+.gallery-strip.reverse { animation: galleryScrollReverse 30s linear infinite; }
+@keyframes galleryScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+@keyframes galleryScrollReverse { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
+.gallery-strip:hover { animation-play-state: paused; }
+
+.gallery-card {
+  width: 280px;
+  height: 180px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glow);
+  border-radius: 16px;
+  overflow: hidden;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 5rem;
+  position: relative;
+}
+.gallery-card:hover { border-color: var(--primary); transform: scale(1.05); box-shadow: var(--glow-primary); }
+
+.gallery-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.gallery-card:hover img { transform: scale(1.1); }
+
+/* ============================================================
+   CONTACT / FOOTER SECTION
+   ============================================================ */
+#contact {
+  background: var(--bg-dark);
+  border-top: 1px solid var(--border-glow);
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto 4rem;
+}
+
+.contact-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glow);
+  border-radius: 16px;
+  padding: 2rem;
+  text-align: center;
+  transition: var(--transition);
+  backdrop-filter: blur(10px);
+}
+.contact-card:hover { border-color: var(--primary); transform: translateY(-4px); box-shadow: var(--glow-primary); }
+.contact-card-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+.contact-card-title {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  color: var(--primary);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.contact-card-value {
+  font-family: var(--font-arabic);
+  font-size: 1.1rem;
+  color: var(--text-white);
+  font-weight: 700;
+}
+
+.contact-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 4rem;
+}
+
+.contact-btn {
+  padding: 0.9rem 2rem;
+  border-radius: 50px;
+  font-family: var(--font-arabic);
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  border: none;
+}
+.contact-btn.phone { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: var(--bg-deep); box-shadow: var(--glow-primary); }
+.contact-btn.whatsapp { background: linear-gradient(135deg, #25D366, #128C7E); color: #fff; box-shadow: 0 0 20px rgba(37,211,102,0.4); }
+.contact-btn.maps { background: linear-gradient(135deg, #4285F4, #34A853); color: #fff; box-shadow: 0 0 20px rgba(66,133,244,0.4); }
+.contact-btn:hover { transform: translateY(-3px) scale(1.03); }
+
+footer {
+  text-align: center;
+  padding: 3rem 2rem 2rem;
+  border-top: 1px solid var(--border-glow);
+}
+.footer-logo {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--primary);
+  text-shadow: var(--glow-primary);
+  margin-bottom: 0.5rem;
+}
+.footer-tagline {
+  font-family: var(--font-arabic);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+.footer-copy {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: rgba(122,184,160,0.5);
+}
+
+/* ============================================================
+   CART NOTIFICATION TOAST
+   ============================================================ */
+#cart-toast {
+  position: fixed;
+  top: 90px;
+  right: -300px;
+  background: rgba(0,212,170,0.95);
+  color: var(--bg-deep);
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  font-family: var(--font-arabic);
+  font-weight: 700;
+  font-size: 0.9rem;
+  z-index: 9500;
+  transition: right 0.4s ease;
+  box-shadow: var(--glow-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+#cart-toast.show { right: 1.5rem; }
+
+/* ============================================================
+   CART OVERLAY
+   ============================================================ */
+#cart-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 8998;
+  display: none;
+  backdrop-filter: blur(5px);
+}
+#cart-overlay.show { display: block; }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+  .nav-lang-toggle { display: none; }
+  #cart-sidebar { width: 100%; right: -100%; }
+  .hero-stats { gap: 1.5rem; }
+  .sides-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+  #chatbot-window { width: 290px; right: -10px; }
+  .combo-banner { padding: 2rem 1.5rem; }
+}
+
+@media (max-width: 480px) {
+  .section { padding: 4rem 1rem; }
+  .hero-content { padding-top: 100px; }
+  .sides-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ============================================================
+   UTILITY / HELPERS
+   ============================================================ */
+.max-container { max-width: 1300px; margin: 0 auto; }
+.text-center { text-align: center; }
+.hidden { display: none !important; }
+.whatsapp-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #25d366;
+    color: white;
+    padding: 15px 22px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    box-shadow: 0 0 20px #25d366;
+    z-index: 9999;
+    transition: 0.3s;
+}
+
+#whatsapp-float {
+  position: fixed;
+  top: 50%;
+  left: 2rem;
+  transform: translateY(-50%);
+  width: 55px;
+  height: 55px;
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  z-index: 8997;
+  text-decoration: none;
+  animation: waPulse 2.5s ease-in-out infinite;
+  transition: all 0.3s ease;
+}
+
+#whatsapp-float:hover {
+  transform: translateY(-50%) scale(1.15);
+  animation: none;
+  box-shadow: 0 0 50px rgba(37,211,102,0.9);
+}
+
+@keyframes waPulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(37,211,102,0.5); }
+  50%       { box-shadow: 0 0 40px rgba(37,211,102,0.8), 0 0 60px rgba(37,211,102,0.3); }
+}
+#theme-toggle {
+  background: transparent;
+  border: 1px solid var(--border-glow);
+  color: var(--primary);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#theme-toggle:hover {
+  background: var(--bg-glass);
+  box-shadow: var(--glow-primary);
+}
+
+/* ثيم الوايت */
+body.light-mode {
+  --bg-deep: #f0f4f2;
+  --bg-dark: #e0ebe5;
+  --bg-card: rgba(255,255,255,0.9);
+  --bg-glass: rgba(0,212,170,0.08);
+  --text-white: #0a1f15;
+  --text-muted: #3a6e58;
+  --border-glow: rgba(0,150,100,0.25);
+}
+
+body.light-mode #navbar {
+  background: rgba(240,244,242,0.92);
+}
+
+body.light-mode .meal-card,
+body.light-mode .sandwich-card,
+body.light-mode .burger-card,
+body.light-mode .kids-card,
+body.light-mode .family-card,
+body.light-mode .side-card {
+  background: rgba(255,255,255,0.95);
+  border-color: rgba(0,150,100,0.2);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+body.light-mode #hero {
+  background: linear-gradient(180deg, #e8f5ef 0%, #f0f4f2 100%);
+}
+
+body.light-mode #particles-canvas {
+  opacity: 0.15;
+}
+@keyframes reviewsScroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+#reviews-track:hover {
+  animation-play-state: paused;
+}
+
+.review-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glow);
+  border-radius: 20px;
+  padding: 1.8rem;
+  width: 300px;
+  flex-shrink: 0;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.review-card::before {
+  content: '"';
+  position: absolute;
+  top: -10px;
+  right: 1.5rem;
+  font-size: 6rem;
+  color: var(--primary);
+  opacity: 0.1;
+  font-family: Georgia, serif;
+  line-height: 1;
+}
+
+.review-card:hover {
+  border-color: var(--primary);
+  transform: translateY(-5px);
+  box-shadow: var(--glow-primary);
+}
+
+.review-stars {
+  color: #ffd700;
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+  letter-spacing: 2px;
+}
+
+.review-text {
+  font-family: var(--font-arabic);
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.8;
+  margin-bottom: 1.2rem;
+  direction: rtl;
+}
+
+.review-author {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.review-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.review-name {
+  font-family: var(--font-arabic);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-white);
+}
+
+.review-date {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.1rem;
+}
+
+.review-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: rgba(0,212,170,0.1);
+  border: 1px solid var(--border-glow);
+  color: var(--primary);
+  font-size: 0.65rem;
+  font-family: var(--font-display);
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  letter-spacing: 0.1em;
+}
+
+.ann-item {
+  font-family: 'Cairo', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #fff;
+  padding: 0 3rem;
+}
+.ann-item::after {
+  content: '★';
+  margin-right: 3rem;
+  opacity: 0.6;
+}
+@keyframes announcementScroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes announcementBg {
+  0%   { background-position: 0%; }
+  100% { background-position: 200%; }
+}
+</style>
+</head>
+<body>
+  
+
+<!-- CURSOR -->
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+
+<!-- SCROLL PROGRESS -->
+<div id="scroll-progress"></div>
+
+<!-- PARTICLES -->
+<canvas id="particles-canvas"></canvas>
+
+<!-- LOADING SCREEN -->
+<div id="loader">
+  <div class="loader-particles" id="loader-particles"></div>
+  <div class="loader-logo">CHICKEN BROEST</div>
+  <div class="loader-sub">بروست دجاج مقرمش</div>
+  <div class="loader-bar-container">
+    <div class="loader-bar"></div>
+  </div>
+</div>
+
+<!-- CART OVERLAY -->
+<div id="cart-overlay" onclick="closeCart()"></div>
+
+<!-- CART TOAST -->
+<div id="cart-toast"><span>✓</span> <span id="toast-text">تمت الإضافة!</span></div>
+
+<!-- ============================================================
+     NAVBAR
+     ============================================================ -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">CHICKEN <span>BROEST</span></a>
+  <ul class="nav-links">
+    <li><a href="#menu" class="nav-link">المنيو</a></li>
+    <li><a href="#gallery" class="nav-link">معرض الصور</a></li>
+    <li><a href="#contact" class="nav-link">تواصل معنا</a></li>
+    <li><a href="tel:01202594444" class="nav-cta">📞 اطلب الآن</a></li>
+  </ul>
+  <div style="display:flex;gap:0.8rem;align-items:center;">
+    <button id="theme-toggle" onclick="toggleTheme()">🌙</button>
+    <button class="nav-lang-toggle" onclick="toggleLang()" id="lang-btn">EN</button>
+    <div class="nav-hamburger" onclick="openMobileMenu()" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+<!-- شريط الإعلانات -->
+<div id="announcement-bar" style="
+  background: linear-gradient(90deg, #ff6b00, #ff8c00, #ff6b00);
+  background-size: 200%;
+  animation: announcementBg 3s linear infinite;
+  padding: 0.6rem 0;
+  overflow: hidden;
+  position: relative;
+  z-index: 999;
+  margin-top: 65px;
+">
+  <div id="announcement-track" style="
+    display: flex;
+    width: max-content;
+    animation: announcementScroll 20s linear infinite;
+    white-space: nowrap;
+  ">
+    <!-- بيتكرر مرتين عشان loop سلس -->
+    <span class="ann-item">🔥 عرض اليوم: كومبو بـ 45 جنيه فقط!</span>
+    <span class="ann-item">🍗 أفضل بروست وفرايد تشيكن في الإسكندرية</span>
+    <span class="ann-item">⚡ متاح 24 ساعة — 7 أيام في الأسبوع</span>
+    <span class="ann-item">📞 اطلب الآن: 01202594444</span>
+    <span class="ann-item">🌶️ جرب الزينجر الجديد — حار ومقرمش!</span>
+    <!-- نفس الكلام تاني مرة للـ loop -->
+    <span class="ann-item">🔥 عرض اليوم: كومبو بـ 45 جنيه فقط!</span>
+    <span class="ann-item">🍗 أفضل بروست وفرايد تشيكن في الإسكندرية</span>
+    <span class="ann-item">⚡ متاح 24 ساعة — 7 أيام في الأسبوع</span>
+    <span class="ann-item">📞 اطلب الآن: 01202594444</span>
+    <span class="ann-item">🌶️ جرب الزينجر الجديد — حار ومقرمش!</span>
+  </div>
+</div>
+
+<!-- Mobile Nav -->
+<div class="nav-mobile" id="mobile-menu">
+  <button class="nav-mobile-close" onclick="closeMobileMenu()">✕</button>
+  <a href="#menu" onclick="closeMobileMenu()">المنيو</a>
+  <a href="#gallery" onclick="closeMobileMenu()">معرض الصور</a>
+  <a href="#contact" onclick="closeMobileMenu()">تواصل معنا</a>
+  <a href="tel:01202594444" onclick="closeMobileMenu()">📞 01202594444</a>
+</div>
+<canvas id="food-canvas" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.7;"></canvas>
+
+<!-- ============================================================
+     HERO SECTION
+     ============================================================ -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-badge">🔥 FEEL THE CRUNCH — LOVE THE TASTE</div>
+    <h1 class="hero-title">
+      <span class="highlight">CHICKEN</span>
+      <span class="highlight-orange">BROEST</span>
+    </h1>
+    <p class="hero-subtitle">أفضل بروست وفرايد تشيكن في الإسكندرية</p>
+    <div class="hero-buttons">
+      <a href="#menu" class="btn-primary">🍗 شاهد المنيو</a>
+      <a href="tel:01202594444" class="btn-secondary">📞 اطلب الآن</a>
+      <a href="https://maps.app.goo.gl/514goa263aSEXXDbA" target="_blank" class="btn-ghost">📍 موقعنا</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="num" data-target="24">0</span>
+        <span class="label">ساعة / يومياً</span>
+      </div>
+      <div class="hero-stat">
+        <span class="num" data-target="50">0</span>
+        <span class="label">+ صنف في المنيو</span>
+      </div>
+      <div class="hero-stat">
+        <span class="num" data-target="10000">0</span>
+        <span class="label">+ عميل سعيد</span>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll-hint">
+    <span>SCROLL</span>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+  </div>
+</section>
+<a href="https://wa.me/201202594444" class="whatsapp-btn" target="_blank">
+    اطلب الآن 🍗
+</a>
+<!-- ============================================================
+     MENU SECTION
+     ============================================================ -->
+<section id="menu" class="section">
+  <div class="max-container">
+    <div class="section-header reveal">
+      <span class="section-tag">OFFICIAL MENU</span>
+      <h2 class="section-title">OUR <span class="glow">MENU</span></h2>
+      <p class="section-title-ar">قائمة طعامنا الكاملة</p>
+      <div class="section-divider"><div class="section-divider-dot"></div></div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="menu-search-wrapper reveal">
+      <input type="text" class="menu-search" id="menuSearch" placeholder="🔍 ابحث عن وجبتك المفضلة..." oninput="searchMenu(this.value)">
+    </div>
+
+    <!-- Filter Buttons -->
+    <div class="menu-filter-bar reveal">
+      <button class="filter-btn active" onclick="filterMenu('all', this)">الكل</button>
+      <button class="filter-btn" onclick="filterMenu('individual', this)">وجبات فردية</button>
+      <button class="filter-btn" onclick="filterMenu('sandwiches', this)">سندويشات</button>
+      <button class="filter-btn" onclick="filterMenu('burgers', this)">برجر</button>
+      <button class="filter-btn" onclick="filterMenu('kids', this)">وجبات أطفال</button>
+      <button class="filter-btn" onclick="filterMenu('family', this)">وجبات عائلية</button>
+      <button class="filter-btn" onclick="filterMenu('sides', this)">إضافات</button>
+    </div>
+
+    <!-- ---- INDIVIDUAL MEALS ---- -->
+    <div class="menu-category active" id="cat-individual">
+      <div class="reveal">
+        <div class="menu-category-title">Individual Meals</div>
+        <div class="menu-category-title-ar">الوجبات الفردية</div>
+      </div>
+      <div class="individual-grid" id="individual-grid"></div>
+    </div>
+
+    <!-- ---- SANDWICHES ---- -->
+    <div class="menu-category active" id="cat-sandwiches">
+      <div class="reveal">
+        <div class="menu-category-title">Sandwiches</div>
+        <div class="menu-category-title-ar">السندويشات</div>
+      </div>
+      <div class="sandwich-grid" id="sandwiches-grid"></div>
+    </div>
+
+    <!-- ---- BURGERS ---- -->
+    <div class="menu-category active" id="cat-burgers">
+      <div class="reveal">
+        <div class="menu-category-title">Burgers</div>
+        <div class="menu-category-title-ar">البرجر</div>
+      </div>
+      <div class="burger-grid" id="burgers-grid"></div>
+    </div>
+
+    <!-- ---- COMBO ---- -->
+    <div class="menu-category active" id="cat-combo">
+      <div class="combo-banner reveal">
+        <div class="combo-label">🔥 SPECIAL COMBO OFFER</div>
+        <div class="combo-price-display">45 <span>جنيه فقط</span></div>
+        <div class="combo-desc">أضف كومبو على أي وجبة!</div>
+        <div class="combo-sub">وأحصل على كومبو (بطاطس + مشروب)</div>
+        <div class="combo-includes">
+          <div class="combo-include-item"><div class="ci-icon">🍟</div><div class="ci-label">بطاطس</div></div>
+          <div class="combo-include-item"><div class="ci-icon">➕</div><div class="ci-label"></div></div>
+          <div class="combo-include-item"><div class="ci-icon">🥤</div><div class="ci-label">مشروب</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ---- KIDS MEALS ---- -->
+    <div class="menu-category active" id="cat-kids">
+      <div class="reveal">
+        <div class="menu-category-title">Kids Meals</div>
+        <div class="menu-category-title-ar">وجبات الأطفال</div>
+      </div>
+      <div class="kids-grid" id="kids-grid"></div>
+    </div>
+
+    <!-- ---- FAMILY MEALS ---- -->
+    <div class="menu-category active" id="cat-family">
+      <div class="reveal">
+        <div class="menu-category-title">Family Meals</div>
+        <div class="menu-category-title-ar">الوجبات العائلية</div>
+      </div>
+      <div class="family-grid" id="family-grid"></div>
+    </div>
+
+    <!-- ---- SIDE ITEMS ---- -->
+    <div class="menu-category active" id="cat-sides">
+      <div class="reveal">
+        <div class="menu-category-title">Side Items</div>
+        <div class="menu-category-title-ar">الإضافات والمشروبات</div>
+      </div>
+      <div class="sides-grid" id="sides-grid"></div>
+    </div>
+  </div>
+</section>
+<button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" style="
+  display:none; position:fixed; bottom:6rem; left:2rem;
+  width:45px; height:45px; border-radius:50%; border:none;
+  background:linear-gradient(135deg,#00d4aa,#009977);
+  color:#020c08; font-size:1.3rem; cursor:pointer; z-index:9000;
+  box-shadow: 0 0 15px rgba(0,212,170,0.5);
+  transition: all 0.3s ease;
+">↑</button>
+<!-- ============================================================
+     GALLERY SECTION
+     ============================================================ -->
+<section id="gallery" class="section">
+  <div class="max-container">
+    <div class="section-header reveal">
+      <span class="section-tag">VISUAL SHOWCASE</span>
+      <h2 class="section-title">OUR <span class="accent">STORY</span></h2>
+      <p class="section-title-ar">معرض بروست</p>
+      <div class="section-divider"><div class="section-divider-dot"></div></div>
+    </div>
+  </div>
+  <!-- Scrolling gallery strip 1 -->
+  <div class="gallery-strip" id="gallery-strip-1"></div>
+  <!-- Scrolling gallery strip 2 -->
+  <div class="gallery-strip reverse" id="gallery-strip-2"></div>
+</section>
+<section id="reviews" class="section">
+  <div class="max-container">
+    <div class="section-header reveal">
+      <span class="section-tag">CUSTOMERS REVIEWS</span>
+      <h2 class="section-title">آراء <span class="glow">عملائنا</span></h2>
+      <p class="section-title-ar">ماذا يقول عملاؤنا</p>
+      <div class="section-divider"><div class="section-divider-dot"></div></div>
+    </div>
+    <div id="reviews-track-wrapper" style="overflow:hidden; position:relative;">
+      <div id="reviews-track" style="
+        display: flex;
+        gap: 1.5rem;
+        animation: reviewsScroll 25s linear infinite;
+        width: max-content;
+      "></div>
+    </div>
+  </div>
+</section>
+<!-- ============================================================
+     CONTACT SECTION
+     ============================================================ -->
+<section id="contact" class="section">
+  <div class="max-container">
+    <div class="section-header reveal">
+      <span class="section-tag">GET IN TOUCH</span>
+      <h2 class="section-title">CONTACT <span class="glow">US</span></h2>
+      <p class="section-title-ar">تواصل معنا</p>
+      <div class="section-divider"><div class="section-divider-dot"></div></div>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-card reveal reveal-delay-1">
+        <div class="contact-card-icon">📞</div>
+        <div class="contact-card-title">PHONE</div>
+        <div class="contact-card-value">01202594444</div>
+      </div>
+      <div class="contact-card reveal reveal-delay-2">
+        <div class="contact-card-icon">⏰</div>
+        <div class="contact-card-title">WORKING HOURS</div>
+        <div class="contact-card-value">24 ساعة / 7 أيام</div>
+      </div>
+      <div class="contact-card reveal reveal-delay-3">
+        <div class="contact-card-icon">📍</div>
+        <div class="contact-card-title">LOCATION</div>
+        <div class="contact-card-value">الإسكندرية، مصر</div>
+      </div>
+    </div>
+    <div class="contact-actions reveal">
+      <a href="tel:01202594444" class="contact-btn phone">📞 اتصل بنا الآن</a>
+      <a href="https://wa.me/201202594444" target="_blank" class="contact-btn whatsapp">💬 واتساب</a>
+      <a href="https://maps.app.goo.gl/514goa263aSEXXDbA" target="_blank" class="contact-btn maps">🗺️ خريطة جوجل</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">CHICKEN BROEST</div>
+  <div class="footer-tagline">أفضل بروست وفرايد تشيكن في الإسكندرية 🍗</div>
+  <div class="footer-copy">© 2025 Chicken Broest. All rights reserved.</div>
+</footer>
+
+<!-- ============================================================
+     CART SIDEBAR
+     ============================================================ -->
+<div id="cart-sidebar">
+  <div class="cart-header">
+    <div class="cart-title">🛒 سلة التسوق</div>
+    <button class="cart-close" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cart-items-container">
+    <div class="cart-empty" id="cart-empty">
+      <div class="cart-empty-icon">🛒</div>
+      <p>سلة التسوق فارغة</p>
+      <p style="font-size:0.8rem;opacity:0.6;">أضف وجباتك المفضلة</p>
+    </div>
+  </div>
+  <div class="cart-upsell" id="cart-upsell" style="display:none;">
+    💡 أضف 45 جنيه واحصل على بطاطس + مشروب!
+  </div>
+  <div class="cart-footer">
+    <div class="cart-total">
+      <span class="cart-total-label">الإجمالي:</span>
+      <span class="cart-total-price" id="cart-total">0 جنيه</span>
+    </div>
+    <button class="cart-checkout-btn" onclick="checkout()">اطلب الآن عبر الهاتف 📞</button>
+  </div>
+</div>
+
+<!-- CART TOGGLE BUTTON -->
+<button id="cart-toggle" onclick="toggleCart()">
+  🛒
+  <span id="cart-count"></span>
+</button>
+
+<!-- ============================================================
+     CHATBOT
+     ============================================================ -->
+<div id="chatbot">
+  <div id="chatbot-window">
+    <div class="chatbot-header">
+      <div class="chatbot-avatar">🤖</div>
+      <div class="chatbot-info">
+        <div class="chatbot-name">BROEST AI</div>
+        <div class="chatbot-status">متصل الآن</div>
+      </div>
+    </div>
+    <div class="chatbot-messages" id="chatbot-messages"></div>
+    <div class="chatbot-input-area">  
+      <input type="text" class="chatbot-input" id="chatbot-input" placeholder="اكتب رسالتك..." onkeypress="chatKeyPress(event)">
+      <button class="chatbot-send" onclick="sendChatMessage()">➤</button>
+    </div>
+  </div>
+  <button id="chatbot-toggle" onclick="toggleChatbot()">🤖</button>
+</div>
+<!-- Copyright Badge -->
+<p style="text-align:center; font-family:sans-serif; font-size:14px; color:#888; margin:20px 0;">
+  © 2026 
+  <a href="https://mohamed2011abbass.github.io/Mohamed-Abbas/" 
+     target="_blank" 
+     style="color:#00d4aa; text-decoration:none; font-weight:bold;">
+    Mohamed Abbas
+  </a>. All rights reserved.
+</p>
+<a href="https://wa.me/201202594444" target="_blank" id="whatsapp-float">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="28" height="28" fill="white">
+    <path d="M16 2C8.28 2 2 8.28 2 16c0 2.46.66 4.88 1.91 7.01L2 30l7.18-1.88A13.94 13.94 0 0 0 16 30c7.72 0 14-6.28 14-14S23.72 2 16 2zm7.27 19.39c-.3.84-1.76 1.61-2.42 1.71-.62.09-1.4.13-2.26-.14-.52-.16-1.19-.38-2.04-.74-3.59-1.55-5.93-5.16-6.11-5.4-.17-.24-1.41-1.88-1.41-3.58s.89-2.54 1.21-2.89c.3-.33.66-.41.88-.41.22 0 .44 0 .63.01.2.01.48-.08.75.57.3.68 1.01 2.47 1.1 2.65.09.17.15.38.03.61-.12.24-.18.38-.35.59-.17.2-.36.45-.51.61-.17.17-.35.36-.15.7.2.35.9 1.49 1.94 2.41 1.33 1.19 2.46 1.56 2.8 1.73.35.17.55.14.75-.08.2-.22.87-1.01 1.1-1.36.22-.35.44-.29.75-.17.3.12 1.9.9 2.23 1.06.33.17.55.25.63.38.09.14.09.78-.21 1.62z"/>
+  </svg>
+</a>
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+/* ============================================================
+   MENU DATA
+   ============================================================ */
+const menuData = {
+  individual: [
+    { name: 'Light Crispy', nameAr: 'لايت كرسبي', price: 140, emoji: '🍗', desc: '3 قطع كرسبي، 1 قطعة خبز، 1 بطاطس صغير', badge: 'مميز' },
+    { name: 'Snack Box', nameAr: 'سناك بوكس', price: 130, emoji: '📦', desc: '2 قطعة دجاج، 1 قطعة خبز، 1 بطاطس صغير' },
+    { name: 'Dinner Box', nameAr: 'دينر بوكس', price: 185, emoji: '🍱', desc: '3 قطع دجاج، 2 قطعة خبز، 1 بطاطس صغير، 1 كلوسلو', badge: 'الأكثر طلباً' },
+    { name: 'Mix Meals', nameAr: 'ميكس ميل', price: 210, emoji: '🍽️', desc: '2 قطع كرسبي، 2 قطع دجاج، أرز صغير، 2 قطع خبز، 1 بطاطس صغير، توميا', badge: 'وجبة كاملة' },
+    { name: 'Crispy Box', nameAr: 'كرسبي بوكس', price: 200, emoji: '🔥', desc: '5 قطع كرسبي، 2 قطعة خبز، 1 بطاطس صغير، 1 كلوسلو', badge: 'حار' },
+    { name: 'Big Rizo', nameAr: 'بيج ريزو', price: 190, emoji: '🍚', desc: '3 قطع ستريس، أرز، 1 بطاطس، وصوص اختياري' },
+    { name: 'Rizo Shish', nameAr: 'ريزو شيش', price: 150, emoji: '🥙', desc: 'أرز بسمتي بقطع الشيش المشوي ومكعبات البصل والفلفل مع صوص اختياري ومشروب غازي' },
+  ],
+  sandwiches: [
+    { name: 'Salami Broest', nameAr: 'سلامي بروست', desc: 'صدور دجاج مقلية، مايونيز، وشرائح خيار', priceLg: 120, priceXl: 155 },
+    { name: 'Super Broest', nameAr: 'سوبر بروست', desc: 'صدور دجاج فيليه، صوص جبنة، مايونيز، وشرائح خيار', priceLg: 110, priceXl: 145 },
+    { name: 'Super Dragon', nameAr: 'سوبر دراجون', desc: 'صدور دجاج حارة جداً، صوص جبنة مايونيز، شيبة، وخيار', priceLg: 110, priceXl: 145, spicy: true },
+    { name: 'Roll Broest', nameAr: 'رول بروست', desc: 'صدور دجاج مقلية، مكعبات، مايونيز، وخيار', priceLg: 110, priceXl: null },
+    { name: 'Jumbo Roll', nameAr: 'جامبو رول', desc: 'صدور دجاج كبيرة، صوص جبنة، شيبة، خيار، وجالابينيو', priceLg: 145, priceXl: null },
+    { name: 'Zinger', nameAr: 'زينجر', desc: 'صدور دجاج مقلية حارة جداً، مايونيز، وخيار', priceLg: 105, priceXl: 135, spicy: true },
+    { name: 'Jalapeño Broest', nameAr: 'هالبينيو بروست', desc: 'صدور دجاج، صوص حارة جداً، مايونيز، جبنة، فلفل هالبينيو', priceLg: 120, priceXl: 150, spicy: true },
+    { name: 'Chicken Crispy', nameAr: 'تشيكر كريسبي', desc: 'صدور دجاج كرسبي، صوص جبنة مقلية، مايونيز، وشرائح خيار', priceLg: 105, priceXl: 135 },
+    { name: 'Blue Cheese', nameAr: 'بلو تشيز', desc: 'صدور دجاج مقلية، صوص جبنة ريكفورت، وشرائح خيار', priceLg: 110, priceXl: 145 },
+    { name: 'Romi Broest', nameAr: 'رومي بروست', desc: 'صدور دجاج مقلية، جبنة شيدر، روم محمّص، مايونيز، وخيار', priceLg: 120, priceXl: 155 },
+    { name: 'Chicken Fillet', nameAr: 'مشوي صدور', desc: 'صدور دجاج مشوي مع القلم والمايونيز والثوم', priceLg: null, priceXl: 130 },
+    { name: 'Shish Tawook', nameAr: 'شيش طاووق', desc: 'قطع شيش مشوية على الفحم مع المكعبات والمايونيز والثوم', priceLg: null, priceXl: 130 },
+    { name: 'Mixcano', nameAr: 'ميسيكانو', desc: 'صدور الدجاج المقلية بصوص الأكتيكو الميكسيكي مع شرائح البيض والخس والمايونيز', priceLg: null, priceXl: 130 },
+  ],
+  burgers: [
+    { name: 'Chicken Burger', nameAr: 'تشيكن برجر', desc: 'قطعة دجاج، مايونيز، وشرائح خيار', priceS: 70, priceD: 105, emoji: '🍔' },
+    { name: 'Cheese Burger', nameAr: 'تشيز برجر', desc: 'كريمة برجر، صوص جبنة، مايونيز، وشرائح خيار', priceS: 75, priceD: 110, emoji: '🧀' },
+    { name: 'Chicken Classic', nameAr: 'كلاسيك تشيكر', desc: 'صدور دجاج مقلية مع صوص جبنة، مايونيز، ليمون، وخيار', priceS: 95, priceD: 135, emoji: '🍗' },
+    { name: 'Chicken Smoked Turkey', nameAr: 'كلاسيك تركي مدخن', desc: 'صدور دجاج، صوص جبنة فيليه مدخن، ليمون، وخيار', priceS: 100, priceD: 145, emoji: '🦃' },
+    { name: 'Chicken Steak', nameAr: 'تشيكن ستيك', desc: 'صدور دجاج صوص جبنة الأصابع مع المزاريلا والخضار', priceS: 110, priceD: 150, emoji: '🥩', featured: true },
+    { name: 'Chicken Smoked Beef', nameAr: 'تشيكر بيف مدخن', desc: 'صدور دجاج صوص جبنة فيليه لحم ثري مدخن، وشرائح خيار', priceS: 100, priceD: 145, emoji: '🐄' },
+    { name: 'Chicken Jalapeño', nameAr: 'تشيكن هالبينيو', desc: 'صدور دجاج مقلية، مايونيز، صوص، فلفل هالبينيو', priceS: 100, priceD: 145, emoji: '🌶️', spicy: true },
+    { name: 'Chicken Smoked Mix', nameAr: 'تشيكر مكس مدخن', desc: 'صدور دجاج، صوص جبنة، لحم ثري مدخن، كام ثري رومي، وشرائح خيار', priceS: 110, priceD: 150, emoji: '🔥', featured: true },
+  ],
+  kids: [
+    { name: 'Happy Meal Nuggets', nameAr: 'هابي ميل ناجتس', price: 100, emoji: '🐣', desc: '5 قطع ناجتس، قطعة خبز، بطاطس صغير، عصير صغير' },
+    { name: 'Happy Meal Burger', nameAr: 'هابي ميل برجر', price: 100, emoji: '🍔', desc: 'ساندويتش برجر، بطاطس صغير، عصير صغير' },
+    { name: 'Happy Meal Strips', nameAr: 'هابي ميل ستريس', price: 120, emoji: '🍟', desc: '2 قطعة ستريس، بطاطس صغير، عصير صغير، قطعة خبز' },
+    { name: 'Happy Meal Chicken', nameAr: 'هابي ميل تشيكر', price: 110, emoji: '🍗', desc: 'قطعة دجاج، بطاطس صغير، عصير صغير، قطعة خبز' },
+  ],
+  family: [
+    { name: 'Family Meal', nameAr: 'فاميلي ميل', price: 465, emoji: '👨‍👩‍👧‍👦', desc: '8 قطع دجاج، 8 قطع خبز، 1 بطاطس كبير، 2 كلوسلو' },
+    { name: 'Party Meal', nameAr: 'بارتي ميل', price: 580, emoji: '🎉', desc: '6 قطع ستريس، 6 قطع دجاج، 8 قطع خبز، 1 بطاطس كبير، 2 كلوسلو', badge: 'الأكثر طلباً' },
+    { name: 'Super Family', nameAr: 'سوبر فاميلي', price: 630, emoji: '👑', desc: '12 قطعة دجاج، 8 قطع خبز، 1 بطاطس كبير، 2 كلوسلو', badge: 'عرض خاص' },
+    { name: 'Family Strips', nameAr: 'فاميلي استريس', price: 740, emoji: '🏆', desc: '20 قطعة ستريس، 8 قطع خبز، 1 بطاطس كبير، 2 كلوسلو', badge: 'الأكبر' },
+  ],
+  sides: [
+    { nameAr: 'مشروب غازي', nameEn: 'Soft Drink', price: '15 / 25' },
+    { nameAr: 'مياه', nameEn: 'Water', price: '10' },
+    { nameAr: 'عصير جهينة', nameEn: 'Juice', price: '15' },
+    { nameAr: 'بطاطس', nameEn: 'Fries', price: '35' },
+    { nameAr: 'بطاطس بالجبنة', nameEn: 'Cheese Fries', price: '50' },
+    { nameAr: 'موتزاريلا ستكس', nameEn: 'Mozzarella Sticks', price: '60' },
+    { nameAr: 'بطاطس تشيكر', nameEn: 'Crispy Fries', price: '90' },
+    { nameAr: 'صوص جبنة', nameEn: 'Cheese Sauce', price: '20' },
+    { nameAr: 'توميا', nameEn: 'Toumeya Sauce', price: '15' },
+    { nameAr: 'شيلي تايجر', nameEn: 'Chili Thai Sauce', price: '15' },
+    { nameAr: 'قطعة خبز', nameEn: 'Bread Piece', price: '2' },
+    { nameAr: 'كلو سلو', nameEn: 'Coleslaw', price: '15' },
+    { nameAr: 'فلفل هالبينيو', nameEn: 'Jalapeño Pepper', price: '10' },
+    { nameAr: 'فتة ريزو', nameEn: 'Rizo Pot', price: '100' },
+    { nameAr: 'قطعة دجاج', nameEn: 'Chicken Piece', price: '65' },
+    { nameAr: 'قطعة كرسبي', nameEn: 'Crispy Piece', price: '40' },
+    { nameAr: 'أرز مبهر', nameEn: 'White Rice', price: '20' },
+    { nameAr: 'ريزو بسمتي', nameEn: 'Basmati Rizo', price: '85' },
+    { nameAr: 'سويت شيلي', nameEn: 'Chili Sauce', price: '15' },
+    { nameAr: 'صوص رانش', nameEn: 'Ranch Sauce', price: '15' },
+    { nameAr: 'صوص باربيكيو', nameEn: 'BBQ Sauce', price: '15' },
+  ]
+};
+
+/* ============================================================
+   CART STATE
+   ============================================================ */
+let cart = [];
+
+function addToCart(item) {
+  const existing = cart.find(i => i.name === item.name);
+  if (existing) {
+    existing.qty++;
+  } else {
+    cart.push({ ...item, qty: 1 });
+  }
+  updateCartUI();
+  showToast('تمت إضافة ' + item.nameAr);
+  if (cart.length > 0) document.getElementById('cart-upsell').style.display = 'block';
+}
+(function() {
+  // إنشاء الـ canvas
+  const canvas = document.createElement('canvas');
+  canvas.id = 'mouse-bg';
+  canvas.style.cssText = `
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.6;
+  `;
+  document.body.prepend(canvas);
+
+  const ctx = canvas.getContext('2d');
+  let W, H, mouse = { x: -999, y: -999 };
+  const DOTS = [];
+  const COUNT = 100;
+
+  // ضبط الحجم
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // تتبع الماوس
+  window.addEventListener('mousemove', e => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+  });
+
+  // إنشاء النقاط
+  for (let i = 0; i < COUNT; i++) {
+    DOTS.push({
+      x:    Math.random() * window.innerWidth,
+      y:    Math.random() * window.innerHeight,
+      r:    Math.random() * 2 + 1,
+      dx:   (Math.random() - 0.5) * 0.5,
+      dy:   (Math.random() - 0.5) * 0.5,
+      base: { x: 0, y: 0 },  // سيُحسب أثناء الرسم
+    });
+  }
+
+  // مسافة بين نقطتين
+  function dist(a, b) {
+    return Math.hypot(a.x - b.x, a.y - b.y);
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    DOTS.forEach(dot => {
+      // تحريك النقطة
+      dot.x += dot.dx;
+      dot.y += dot.dy;
+
+      // ارتداد من الحواف
+      if (dot.x < 0 || dot.x > W) dot.dx *= -1;
+      if (dot.y < 0 || dot.y > H) dot.dy *= -1;
+
+      // تأثير طرد الماوس — النقاط تهرب من المؤشر
+      const d = dist(dot, mouse);
+      if (d < 120) {
+        const angle = Math.atan2(dot.y - mouse.y, dot.x - mouse.x);
+        const force = (120 - d) / 120;
+        dot.x += Math.cos(angle) * force * 3;
+        dot.y += Math.sin(angle) * force * 3;
+      }
+
+      // رسم النقطة
+      const alpha = 0.4 + Math.min(1, 120 / Math.max(dist(dot, mouse), 1)) * 0.4;
+      ctx.beginPath();
+      ctx.arc(dot.x, dot.y, dot.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(0, 212, 170, ${alpha})`;
+      ctx.fill();
+    });
+
+    // رسم الخطوط بين النقاط القريبة
+    for (let i = 0; i < DOTS.length; i++) {
+      for (let j = i + 1; j < DOTS.length; j++) {
+        const d = dist(DOTS[i], DOTS[j]);
+        if (d < 130) {
+          ctx.beginPath();
+          ctx.moveTo(DOTS[i].x, DOTS[i].y);
+          ctx.lineTo(DOTS[j].x, DOTS[j].y);
+          ctx.strokeStyle = `rgba(0, 212, 170, ${0.15 * (1 - d / 130)})`;
+          ctx.lineWidth = 0.8;
+          ctx.stroke();
+        }
+      }
+
+      // خط من كل نقطة للماوس لو قريبة
+      const dm = dist(DOTS[i], mouse);
+      if (dm < 160) {
+        ctx.beginPath();
+        ctx.moveTo(DOTS[i].x, DOTS[i].y);
+        ctx.lineTo(mouse.x, mouse.y);
+        ctx.strokeStyle = `rgba(255, 107, 0, ${0.3 * (1 - dm / 160)})`;
+        ctx.lineWidth = 0.8;
+        ctx.stroke();
+      }
+    }
+
+    // هالة حول الماوس
+    if (mouse.x > 0) {
+      const grd = ctx.createRadialGradient(
+        mouse.x, mouse.y, 0,
+        mouse.x, mouse.y, 120
+      );
+      grd.addColorStop(0,   'rgba(0, 212, 170, 0.08)');
+      grd.addColorStop(0.5, 'rgba(255, 107, 0, 0.04)');
+      grd.addColorStop(1,   'rgba(0, 0, 0, 0)');
+      ctx.beginPath();
+      ctx.arc(mouse.x, mouse.y, 120, 0, Math.PI * 2);
+      ctx.fillStyle = grd;
+      ctx.fill();
+    }
+
+    requestAnimationFrame(draw);
+  }
+
+  draw();
+})();
+function updateCartUI() {
+  const container = document.getElementById('cart-items-container');
+  const emptyEl = document.getElementById('cart-empty');
+  const countEl = document.getElementById('cart-count');
+  const totalEl = document.getElementById('cart-total');
+
+  const totalQty = cart.reduce((s, i) => s + i.qty, 0);
+  const totalPrice = cart.reduce((s, i) => s + (i.price * i.qty), 0);
+
+  if (totalQty > 0) {
+    countEl.textContent = totalQty;
+    countEl.classList.add('visible');
+  } else {
+    countEl.classList.remove('visible');
+  }
+  totalEl.textContent = totalPrice + ' جنيه';
+
+  // Re-render cart items
+  const existing = container.querySelectorAll('.cart-item');
+  existing.forEach(el => el.remove());
+
+  if (cart.length === 0) {
+    emptyEl.style.display = 'flex';
+  } else {
+    emptyEl.style.display = 'none';
+    cart.forEach((item, idx) => {
+      const el = document.createElement('div');
+      el.className = 'cart-item';
+      el.innerHTML = `
+        <div class="cart-item-icon">${item.emoji || '🍗'}</div>
+        <div class="cart-item-info">
+          <div class="cart-item-name">${item.nameAr}</div>
+          <div class="cart-item-price">${item.price * item.qty} جنيه</div>
+        </div>
+        <div class="cart-item-qty">
+          <button class="qty-btn" onclick="changeQty(${idx}, -1)">−</button>
+          <span class="qty-display">${item.qty}</span>
+          <button class="qty-btn" onclick="changeQty(${idx}, 1)">+</button>
+        </div>
+      `;
+      container.appendChild(el);
+    });
+  }
+}
+
+function changeQty(idx, delta) {
+  cart[idx].qty += delta;
+  if (cart[idx].qty <= 0) cart.splice(idx, 1);
+  updateCartUI();
+  if (cart.length === 0) document.getElementById('cart-upsell').style.display = 'none';
+}
+
+function toggleCart() {
+  document.getElementById('cart-sidebar').classList.toggle('open');
+  document.getElementById('cart-overlay').classList.toggle('show');
+}
+function closeCart() {
+  document.getElementById('cart-sidebar').classList.remove('open');
+  document.getElementById('cart-overlay').classList.remove('show');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('cart-toast');
+  document.getElementById('toast-text').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function checkout() {
+  const msg = cart.map(i => `${i.nameAr} x${i.qty} = ${i.price * i.qty} جنيه`).join('\n');
+  const total = cart.reduce((s, i) => s + (i.price * i.qty), 0);
+  alert('طلبك:\n' + msg + '\n\nالإجمالي: ' + total + ' جنيه\n\nسيتم تحويلك للاتصال بنا على 01202594444');
+  window.location.href = 'tel:01202594444';
+}
+
+/* ============================================================
+   RENDER MENU
+   ============================================================ */
+function renderIndividual() {
+  const grid = document.getElementById('individual-grid');
+  menuData.individual.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'meal-card reveal';
+    div.style.transitionDelay = (i * 0.05) + 's';
+    div.innerHTML = `
+      ${item.badge ? `<div class="meal-card-badge">${item.badge}</div>` : ''}
+      <span class="meal-card-emoji">${item.emoji}</span>
+      <div class="meal-card-name">${item.name}</div>
+      <div class="meal-card-name-ar">${item.nameAr}</div>
+      <div class="meal-card-desc">${item.desc}</div>
+      <div class="meal-card-footer">
+        <div class="meal-price">${item.price} <span>جنيه</span></div>
+        <button class="add-to-cart-btn" onclick='addToCart(${JSON.stringify(item)})'>+</button>
+      </div>
+    `;
+    grid.appendChild(div);
+  });
+}
+
+function renderSandwiches() {
+  const grid = document.getElementById('sandwiches-grid');
+  menuData.sandwiches.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'sandwich-card reveal';
+    div.style.transitionDelay = (i * 0.04) + 's';
+    div.innerHTML = `
+      <div class="sandwich-card-top">
+        <div>
+          <div class="sandwich-name-en">${item.name} ${item.spicy ? '🌶️' : ''}</div>
+          <div class="sandwich-name-ar">${item.nameAr}</div>
+        </div>
+      </div>
+      <div class="sandwich-desc">${item.desc}</div>
+      <div class="sandwich-prices">
+        <div class="price-size ${!item.priceLg ? 'unavailable' : ''}" onclick="${item.priceLg ? `addToCart({name:'${item.name}',nameAr:'${item.nameAr}',price:${item.priceLg},emoji:'🥙'})` : ''}">
+          <div class="size-label">L</div>
+          <div class="size-price">${item.priceLg || '—'}</div>
+        </div>
+        <div class="price-size ${!item.priceXl ? 'unavailable' : ''}" onclick="${item.priceXl ? `addToCart({name:'${item.name} XL',nameAr:'${item.nameAr} XL',price:${item.priceXl},emoji:'🥙'})` : ''}">
+          <div class="size-label">XL</div>
+          <div class="size-price">${item.priceXl || '—'}</div>
+        </div>
+      </div>
+    `;
+    grid.appendChild(div);
+  });
+}
+
+function renderBurgers() {
+  const grid = document.getElementById('burgers-grid');
+  menuData.burgers.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'burger-card reveal';
+    div.style.transitionDelay = (i * 0.05) + 's';
+    div.innerHTML = `
+      <div class="burger-card-visual">
+        ${item.emoji}
+        ${item.featured ? `<div class="meal-card-badge" style="top:0.8rem;right:0.8rem;">مميز</div>` : ''}
+      </div>
+      <div class="burger-card-body">
+        <div class="burger-card-name">${item.name} ${item.spicy ? '🌶️' : ''}</div>
+        <div class="burger-card-name-ar">${item.nameAr}</div>
+        <div class="burger-prices-row">
+          <div>
+            <div class="burger-s">فردي: <strong>${item.priceS} جنيه</strong></div>
+          </div>
+          <div class="burger-d">${item.priceD}<span> جنيه</span></div>
+          <button class="add-to-cart-btn" onclick='addToCart({name:"${item.name}",nameAr:"${item.nameAr}",price:${item.priceD},emoji:"${item.emoji}"})'>+</button>
+        </div>
+      </div>
+    `;
+    grid.appendChild(div);
+  });
+}
+
+function renderKids() {
+  const grid = document.getElementById('kids-grid');
+  menuData.kids.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'kids-card reveal';
+    div.style.transitionDelay = (i * 0.1) + 's';
+    div.innerHTML = `
+      <div class="kids-emoji">${item.emoji}</div>
+      <div class="kids-name-en">${item.name}</div>
+      <div class="kids-name-ar">${item.nameAr}</div>
+      <div style="font-family:var(--font-arabic);font-size:0.78rem;color:var(--text-muted);margin-bottom:1rem;">${item.desc}</div>
+      <div class="kids-price">${item.price} <span style="font-size:0.8rem">جنيه</span></div>
+      <button class="add-to-cart-btn" style="margin:1rem auto 0;" onclick='addToCart(${JSON.stringify(item)})'>+</button>
+    `;
+    grid.appendChild(div);
+  });
+}
+
+function renderFamily() {
+  const grid = document.getElementById('family-grid');
+  menuData.family.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'family-card reveal';
+    div.style.transitionDelay = (i * 0.1) + 's';
+    div.innerHTML = `
+      ${item.badge ? `<div class="meal-card-badge">${item.badge}</div>` : ''}
+      <div class="family-card-icon">${item.emoji}</div>
+      <div class="family-card-name-en">${item.name}</div>
+      <div class="family-card-name-ar">${item.nameAr}</div>
+      <div class="family-card-desc">${item.desc}</div>
+      <div class="family-card-price-wrap">
+        <div class="family-price"><sup>EGP</sup>${item.price}</div>
+        <button class="add-to-cart-btn" onclick='addToCart(${JSON.stringify(item)})'>+</button>
+      </div>
+    `;
+    grid.appendChild(div);
+  });
+}
+
+function renderSides() {
+  const grid = document.getElementById('sides-grid');
+  menuData.sides.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'side-card reveal';
+    div.style.transitionDelay = (i * 0.03) + 's';
+    div.innerHTML = `
+      <div class="side-info">
+        <div class="side-name-ar">${item.nameAr}</div>
+        <div class="side-name-en">${item.nameEn}</div>
+      </div>
+      <div class="side-price-display">${item.price} <span style="font-size:0.65rem;color:var(--text-muted)">جنيه</span></div>
+    `;
+    grid.appendChild(div);
+  });
+}
+
+function renderGallery() {
+  const strip1 = document.getElementById('gallery-strip-1');
+  const strip2 = document.getElementById('gallery-strip-2');
+
+  // ✅ هنا حط روابط صورك أو أسماء الملفات
+  const images1 = [
+    'img1.png',
+    'img2.png',
+    'img3.png',
+    'img4.png',
+    'img5.png',
+  ];
+
+  const images2 = [
+    'img6.png',
+    'img7.png',
+    'img8.png',
+    'img9.png',
+    'img10.png',
+  ];
+
+  // الشريط الأول
+  [...images1, ...images1].forEach(src => {
+    const card = document.createElement('div');
+    card.className = 'gallery-card';
+    card.innerHTML = `<img src="${src}" alt="Chicken Broest" loading="lazy">`;
+    strip1.appendChild(card);
+  });
+
+  // الشريط الثاني
+  [...images2, ...images2].forEach(src => {
+    const card = document.createElement('div');
+    card.className = 'gallery-card';
+    card.innerHTML = `<img src="${src}" alt="Chicken Broest" loading="lazy">`;
+    strip2.appendChild(card);
+  });
+}
+
+/* ============================================================
+   FILTERING & SEARCH
+   ============================================================ */
+function filterMenu(category, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  const cats = ['individual','sandwiches','burgers','combo','kids','family','sides'];
+  cats.forEach(cat => {
+    const el = document.getElementById('cat-' + cat);
+    if (el) {
+      if (category === 'all' || cat === category || (cat === 'combo' && category === 'burgers')) {
+        el.classList.add('active');
+      } else {
+        el.classList.remove('active');
+      }
+    }
+  });
+}
+
+function searchMenu(query) {
+  const q = query.toLowerCase().trim();
+  if (!q) {
+    document.querySelectorAll('.meal-card, .sandwich-card, .burger-card, .kids-card, .family-card, .side-card')
+      .forEach(el => el.style.display = '');
+    return;
+  }
+  // Show all categories
+  document.querySelectorAll('.menu-category').forEach(el => el.classList.add('active'));
+
+  document.querySelectorAll('.meal-card, .sandwich-card, .burger-card, .kids-card, .family-card, .side-card').forEach(el => {
+    const text = el.textContent.toLowerCase();
+    el.style.display = text.includes(q) ? '' : 'none';
+  });
+}
+
+/* ============================================================
+   PARTICLES CANVAS
+   ============================================================ */
+function initParticles() {
+  const canvas = document.getElementById('particles-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  for (let i = 0; i < 80; i++) {
+    particles.push({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: Math.random() * 1.5 + 0.5,
+      dx: (Math.random() - 0.5) * 0.4,
+      dy: -Math.random() * 0.6 - 0.2,
+      opacity: Math.random() * 0.5 + 0.1,
+      color: Math.random() > 0.5 ? '0,212,170' : '255,107,0'
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${p.color},${p.opacity})`;
+      ctx.fill();
+
+      p.x += p.dx;
+      p.y += p.dy;
+      if (p.y < -5) p.y = H + 5;
+      if (p.x < -5) p.x = W + 5;
+      if (p.x > W + 5) p.x = -5;
+    });
+
+    // Draw connections
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < 120) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(0,212,170,${0.08 * (1 - dist/120)})`;
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+/* ============================================================
+   CUSTOM CURSOR
+   ============================================================ */
+function initCursor() {
+  const dot = document.getElementById('cursor-dot');
+  const ring = document.getElementById('cursor-ring');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    dot.style.left = mx + 'px';
+    dot.style.top = my + 'px';
+  });
+
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function animateRing() {
+    rx = lerp(rx, mx, 0.12);
+    ry = lerp(ry, my, 0.12);
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  document.querySelectorAll('button, a, .meal-card, .sandwich-card, .burger-card, .filter-btn').forEach(el => {
+    el.addEventListener('mouseenter', () => { ring.style.transform = 'translate(-50%,-50%) scale(1.8)'; ring.style.borderColor = 'var(--accent)'; });
+    el.addEventListener('mouseleave', () => { ring.style.transform = 'translate(-50%,-50%) scale(1)'; ring.style.borderColor = 'var(--primary)'; });
+  });
+}
+
+/* ============================================================
+   SCROLL PROGRESS + NAVBAR
+   ============================================================ */
+function initScroll() {
+  const prog = document.getElementById('scroll-progress');
+  const nav = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    const pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+    prog.style.width = pct + '%';
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
+}
+
+/* ============================================================
+   INTERSECTION OBSERVER (REVEAL)
+   ============================================================ */
+function initReveal() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+}
+
+/* ============================================================
+   ANIMATED COUNTERS
+   ============================================================ */
+function initCounters() {
+  const counters = document.querySelectorAll('[data-target]');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const target = parseInt(el.dataset.target);
+        let current = 0;
+        const step = target / 60;
+        const timer = setInterval(() => {
+          current += step;
+          if (current >= target) { current = target; clearInterval(timer); }
+          el.textContent = Math.floor(current).toLocaleString();
+        }, 20);
+        observer.unobserve(el);
+      }
+    });
+  });
+  counters.forEach(el => observer.observe(el));
+}
+window.addEventListener('scroll', () => {
+  document.getElementById('backToTop').style.display =
+    window.scrollY > 400 ? 'block' : 'none';
+});
+/* ============================================================
+   NAVBAR ACTIVE TRACKING
+   ============================================================ */
+function initNavTracking() {
+  const sections = document.querySelectorAll('section[id]');
+  const links = document.querySelectorAll('.nav-link');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 200) current = s.id;
+    });
+    links.forEach(l => {
+      l.classList.remove('active');
+      if (l.getAttribute('href') === '#' + current) l.classList.add('active');
+    });
+  }, { passive: true });
+}
+
+document.querySelectorAll('button, .btn-primary, .btn-secondary').forEach(btn => {
+  btn.addEventListener('click', function(e) {
+    const ripple = document.createElement('span');
+    const rect = this.getBoundingClientRect();
+    ripple.style.cssText = `
+      position:absolute; border-radius:50%;
+      width:60px; height:60px;
+      background:rgba(255,255,255,0.3);
+      top:${e.clientY - rect.top - 30}px;
+      left:${e.clientX - rect.left - 30}px;
+      animation: rippleAnim 0.6s ease forwards;
+      pointer-events:none;
+    `;
+    this.style.position = 'relative';
+    this.style.overflow = 'hidden';
+    this.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 600);
+  });
+});
+/* ============================================================
+   MOBILE MENU
+   ============================================================ */
+function openMobileMenu() { document.getElementById('mobile-menu').classList.add('open'); }
+function closeMobileMenu() { document.getElementById('mobile-menu').classList.remove('open'); }
+
+/* ============================================================
+   LANG TOGGLE
+   ============================================================ */
+let currentLang = 'ar';
+function toggleLang() {
+  const btn = document.getElementById('lang-btn');
+  if (currentLang === 'ar') {
+    document.documentElement.setAttribute('lang', 'en');
+    document.documentElement.setAttribute('dir', 'ltr');
+    btn.textContent = 'AR';
+    currentLang = 'en';
+  } else {
+    document.documentElement.setAttribute('lang', 'ar');
+    document.documentElement.setAttribute('dir', 'rtl');
+    btn.textContent = 'EN';
+    currentLang = 'ar';
+  }
+}
+
+/* ============================================================
+   CHATBOT
+   ============================================================ */
+let chatOpen = false;
+const botResponses = [
+  { triggers: ['مرحب','أهل','مساء','صباح'], response: 'أهلاً وسهلاً! 🐔 أنا بروست بوت، كيف أقدر أساعدك؟' },
+  { triggers: ['برجر','burger'], response: 'عندنا 8 أنواع برجر رائعة! من الكلاسيك للمدخن الفاخر. الأكثر طلباً هو Chicken Steak 🍔' },
+  { triggers: ['سندويش','ساندويتش','sandwich'], response: 'سندويشاتنا كلها طازة! الأكثر طلباً: Super Broest وSalami Broest 🥙 عايز L ولا XL؟' },
+  { triggers: ['كومبو','combo'], response: 'عروض الكومبو! أضف بطاطس + مشروب بـ 45 جنيه بس على أي وجبة! 🍟🥤' },
+  { triggers: ['أطفال','كيدز','kids'], response: 'وجبات الأطفال تبدأ من 100 جنيه! Happy Meal Nuggets هو المفضل 🐣' },
+  { triggers: ['عيلة','عائلة','family'], response: 'الوجبات العائلية تبدأ من 465 جنيه للـ Family Meal وبتوصل لـ Family Strips بـ 740 جنيه! 👨‍👩‍👧‍👦' },
+  { triggers: ['تليفون','رقم','اتصل'], response: 'رقمنا: 01202594444 متاح 24 ساعة! 📞' },
+  { triggers: ['عنوان','فين','مكان'], response: 'موقعنا على جوجل ماب 📍 https://maps.app.goo.gl/514goa263aSEXXDbA' },
+  { triggers: ['سعر','بكام','كام'], response: 'الأسعار تبدأ من 70 جنيه للبرجر الفردي وتصل للوجبات العائلية. شوف المنيو الكامل فوق! 💰' },
+  { triggers: ['مفتوح','ساعات'], response: 'إحنا مفتوحين 24 ساعة، 7 أيام في الأسبوع! 🕐' },
+];
+
+function addChatMessage(text, type) {
+  const msgs = document.getElementById('chatbot-messages');
+  const div = document.createElement('div');
+  div.className = `chat-msg ${type}`;
+  div.textContent = text;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function getBotResponse(userMsg) {
+  const msg = userMsg.toLowerCase();
+  for (const resp of botResponses) {
+    if (resp.triggers.some(t => msg.includes(t))) return resp.response;
+  }
+  return 'شكراً لتواصلك! 🍗 للطلب الآن اتصل بـ 01202594444 أو استعرض منيونا الكامل. كيف أقدر أساعدك أكثر؟';
+}
+
+function sendChatMessage() {
+  const input = document.getElementById('chatbot-input');
+  const text = input.value.trim();
+  if (!text) return;
+  addChatMessage(text, 'user');
+  input.value = '';
+  setTimeout(() => addChatMessage(getBotResponse(text), 'bot'), 600);
+}
+
+function chatKeyPress(e) {
+  if (e.key === 'Enter') sendChatMessage();
+}
+
+function toggleChatbot() {
+  chatOpen = !chatOpen;
+  const win = document.getElementById('chatbot-window');
+  win.classList.toggle('open', chatOpen);
+  if (chatOpen && document.getElementById('chatbot-messages').children.length === 0) {
+    setTimeout(() => addChatMessage('مرحباً! أنا بروست بوت 🤖 كيف أقدر أساعدك اليوم؟', 'bot'), 300);
+  }
+}
+
+/* ============================================================
+   LOADER
+   ============================================================ */
+function initLoader() {
+  // Add loader particles
+  const lp = document.getElementById('loader-particles');
+  for (let i = 0; i < 20; i++) {
+    const p = document.createElement('div');
+    p.className = 'loader-particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDuration = (Math.random() * 3 + 2) + 's';
+    p.style.animationDelay = Math.random() * 2 + 's';
+    lp.appendChild(p);
+  }
+
+  setTimeout(() => {
+    document.getElementById('loader').classList.add('hide');
+    // Trigger initial reveals after loader
+    setTimeout(initReveal, 200);
+  }, 2800);
+}
+
+/* ============================================================
+   3D TILT CARDS
+   ============================================================ */
+function initTilt() {
+  document.addEventListener('mousemove', (e) => {
+    document.querySelectorAll('.meal-card:hover, .family-card:hover, .burger-card:hover').forEach(card => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      card.style.transform = `translateY(-6px) scale(1.02) rotateX(${-y * 8}deg) rotateY(${x * 8}deg)`;
+    });
+  });
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+document.addEventListener('DOMContentLoaded', () => {
+  initLoader();
+  initParticles();
+  initCursor();
+  initScroll();
+  initCounters();
+  initNavTracking();
+  initTilt();
+
+  // Render all menu sections
+  renderIndividual();
+  renderSandwiches();
+  renderBurgers();
+  renderKids();
+  renderFamily();
+  renderSides();
+  renderGallery();
+});
+
+function toggleTheme() {
+  const body = document.body;
+  const btn = document.getElementById('theme-toggle');
+  body.classList.toggle('light-mode');
+  btn.textContent = body.classList.contains('light-mode') ? '☀️' : '🌙';
+  localStorage.setItem('theme', body.classList.contains('light-mode') ? 'light' : 'dark');
+}
+
+// تذكر اختيار المستخدم
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme === 'light') {
+  document.body.classList.add('light-mode');
+  document.getElementById('theme-toggle').textContent = '☀️';
+}
+function renderReviews() {
+  const track = document.getElementById('reviews-track');
+  if (!track) return;
+
+  const reviews = [
+    { name: 'أحمد محمد', emoji: '👨', stars: 5, text: 'أحسن بروست أكلته في حياتي! الدجاج مقرمش جداً والطعم رائع. هطلب منهم كل يوم 🔥', date: 'منذ يومين', badge: 'زبون دائم' },
+    { name: 'سارة علي', emoji: '👩', stars: 5, text: 'الزينجر ده مش طبيعي! حار ومقرمش وبجد أحسن من أي مطعم تاني في الإسكندرية 😍', date: 'منذ أسبوع' },
+    { name: 'محمود خالد', emoji: '🧔', stars: 5, text: 'طلبت الفاميلي ميل لأول مرة وكانت أكتر من توقعاتي. كمية محترمة وسعر معقول جداً 👌', date: 'منذ 3 أيام', badge: 'موصى به' },
+    { name: 'نورا حسن', emoji: '👱‍♀️', stars: 5, text: 'سوبر بروست XL ده بجد استثمار! كل مرة بطلبه بيجي طازة وساخن. التوصيل سريع كمان ⚡', date: 'منذ 5 أيام' },
+    { name: 'عمر سامي', emoji: '👦', stars: 5, text: 'جربت الريزو شيش وكان تحفة! الأرز البسمتي مع الشيش المشوي تجربة مختلفة خالص 🍚', date: 'منذ أسبوعين' },
+    { name: 'ياسمين طارق', emoji: '👩‍🦱', stars: 5, text: 'الهابي ميل للأطفال ممتاز! ولادي بيحبوه جداً والحجم كويس. شكراً Chicken Broest 🐣', date: 'منذ 4 أيام', badge: 'عائلة سعيدة' },
+    { name: 'كريم وليد', emoji: '🧑', stars: 5, text: 'البارتي ميل أطعمنا كلنا! 6 أشخاص واتشبعنا. سعر ممتاز مقارنة بالكمية والجودة 🎉', date: 'منذ أسبوع' },
+    { name: 'هدى إبراهيم', emoji: '👩‍🦳', stars: 5, text: 'الشيكن ستيك برجر ده من أحسن البرجر اللي جربتها. الجبنة والصوص تجمع رائع 🍔', date: 'منذ يوم' },
+  ];
+
+  // كرر مرتين للـ loop السلس
+  [...reviews, ...reviews].forEach(r => {
+    const card = document.createElement('div');
+    card.className = 'review-card';
+    const starsHTML = '★'.repeat(r.stars) + '☆'.repeat(5 - r.stars);
+    card.innerHTML = `
+      ${r.badge ? `<div class="review-badge">${r.badge}</div>` : ''}
+      <div class="review-stars">${starsHTML}</div>
+      <div class="review-text">${r.text}</div>
+      <div class="review-author">
+        <div class="review-avatar">${r.emoji}</div>
+        <div>
+          <div class="review-name">${r.name}</div>
+          <div class="review-date">${r.date}</div>
+        </div>
+      </div>
+    `;
+    track.appendChild(card);
+  });
+}
+(function() {
+  const canvas = document.getElementById('food-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H;
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const emojis = ['🍗','🍗','🍗','🔥','🌶️','🥙','🍔','🍟','🧀','⭐','✨'];
+
+  const particles = [];
+  for (let i = 0; i < 18; i++) {
+    particles.push({
+      emoji: emojis[Math.floor(Math.random() * emojis.length)],
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      size: Math.random() * 22 + 20,
+      speedX: (Math.random() - 0.5) * 0.7,
+      speedY: (Math.random() - 0.5) * 0.7,
+      rotation: Math.random() * Math.PI * 2,
+      rotSpeed: (Math.random() - 0.5) * 0.025,
+      opacity: Math.random() * 0.4 + 0.35,
+      pulse: Math.random() * Math.PI * 2,
+      pulseSpeed: Math.random() * 0.03 + 0.01,
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    particles.forEach(p => {
+      p.x += p.speedX;
+      p.y += p.speedY;
+      p.rotation += p.rotSpeed;
+      p.pulse += p.pulseSpeed;
+
+      if (p.x < -50) p.x = W + 50;
+      if (p.x > W + 50) p.x = -50;
+      if (p.y < -50) p.y = H + 50;
+      if (p.y > H + 50) p.y = -50;
+
+      const scale = 1 + Math.sin(p.pulse) * 0.15;
+      const currentSize = p.size * scale;
+      const currentOpacity = p.opacity + Math.sin(p.pulse) * 0.05;
+
+      ctx.save();
+      ctx.globalAlpha = Math.max(0.3, currentOpacity);
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rotation);
+      ctx.font = `${currentSize}px serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.shadowColor = 'rgba(0, 212, 170, 0.6)';
+      ctx.shadowBlur = 15;
+      ctx.fillText(p.emoji, 0, 0);
+      ctx.restore();
+    });
+
+    requestAnimationFrame(draw);
+  }
+
+  draw();
+})();
+</script>
+</body>
+</html>
